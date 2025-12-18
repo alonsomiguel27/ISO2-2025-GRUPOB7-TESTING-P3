@@ -1,2 +1,21 @@
-# ISO2-2025-GRUPOB7-TESTING-P3
-Repositorio habilitado para el Problema 3 de testing del segundo trabajo de teoría
+# 🧪 ISO2-2025 · Testing · Problema 3
+
+---
+
+## 👥 Integrantes
+
+- **Mario Burdallo Camargo**
+- **Alonso De Miguel Herencia**
+
+---
+
+## 📂 Repositorio principal del proyecto
+
+👉 **[Acceder al repositorio principal](https://github.com/alonsomiguel27/ISO2-B7.git)**
+
+---
+
+## ℹ️ Descripción
+
+Este repositorio contiene la **implementación y pruebas correspondientes al Problema 3**
+de la asignatura **Ingeniería del Software II (ISO II)**, curso **2025/2026**.
