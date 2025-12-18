@@ -1,6 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Problema 3 - Testing ISO2,problema3,EstadoSalud,15,0,0,0,6,0,3,0,3,0
-Problema 3 - Testing ISO2,problema3,CondicionesMeteorologicas,43,0,4,0,14,0,8,0,6,0
-Problema 3 - Testing ISO2,problema3,EstadoAforos,27,0,0,0,10,0,5,0,5,0
-Problema 3 - Testing ISO2,problema3,Main,229,0,16,0,59,0,14,0,6,0
-Problema 3 - Testing ISO2,problema3,RecomendadorActividades,0,160,14,42,0,34,14,16,0,2
+problema3,problema3,EstadoSalud,0,15,0,0,0,6,0,3,0,3
+problema3,problema3,CondicionesMeteorologicas,5,38,2,2,1,13,2,6,0,6
+problema3,problema3,Main,229,0,16,0,59,0,14,0,6,0
+problema3,problema3,EstadoAforos,0,27,0,0,0,10,0,5,0,5
+problema3,problema3,RecomendadorActividades,0,160,14,42,0,34,14,16,0,2

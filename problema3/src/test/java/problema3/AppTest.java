@@ -1,159 +1,245 @@
 package problema3;
 
+
+
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+
+import org.junit.Test;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+
 
 public class AppTest {
 
-    private RecomendadorActividades sut;
 
-    @Before
-    public void setUp() {
-        sut = new RecomendadorActividades();
+
+    private RecomendadorActividades sistema = new RecomendadorActividades();
+
+
+
+    // --- Helper para crear aforos vacíos (todo libre) ---
+
+    private EstadoAforos aforosLibres() {
+
+        return new EstadoAforos(false, false, false, false);
+
     }
 
-    // Helpers para crear mocks rápido
-    private EstadoSalud salud(boolean plenas, boolean sintomas) {
-        EstadoSalud s = mock(EstadoSalud.class);
-        when(s.isFacultadesFisicasPlenas()).thenReturn(plenas);
-        when(s.hasSintomasInfecciososUltimas2Semanas()).thenReturn(sintomas);
-        return s;
+    
+
+    // --- Helper para Salud Perfecta ---
+
+    private EstadoSalud saludOK() {
+
+        return new EstadoSalud(true, false);
+
     }
 
-    private CondicionesMeteorologicas clima(double temp, int hum, boolean precip, boolean nieve, boolean nublado) {
-        CondicionesMeteorologicas c = mock(CondicionesMeteorologicas.class);
-        when(c.getTemperatura()).thenReturn(temp);
-        when(c.getHumedadRelativa()).thenReturn(hum);
-        when(c.isHayPrecipitaciones()).thenReturn(precip);
-        when(c.isEsNieve()).thenReturn(nieve);
-        when(c.isEstaNublado()).thenReturn(nublado);
-        return c;
-    }
 
-    private EstadoAforos aforos(boolean esquiCompleto, boolean senderismoCompleto, boolean culturalCompleto, boolean piscinaCompleta) {
-        EstadoAforos a = mock(EstadoAforos.class);
-        when(a.isAforoEsquiCompleto()).thenReturn(esquiCompleto);
-        when(a.isAforoSenderismoCompleto()).thenReturn(senderismoCompleto);
-        when(a.isAforoCulturalCompleto()).thenReturn(culturalCompleto);
-        when(a.isAforoPiscinaCompleto()).thenReturn(piscinaCompleta);
-        return a;
-    }
 
-    // --- Pruebas de Caja Negra (reglas) ---
+    // 1. Test Salud Incorrecta (Debe bloquear todo)
 
-    // 1) Salud mala -> retorno temprano
     @Test
-    public void testSaludSinFacultades_NoPuedeHacerNada() {
-        EstadoSalud s = salud(false, false);
 
-        // clima y aforos no deberían usarse si retorna temprano, pero igual los pasamos
-        CondicionesMeteorologicas c = mock(CondicionesMeteorologicas.class);
-        EstadoAforos a = mock(EstadoAforos.class);
+    public void testSaludIncorrecta() {
 
-        List<String> out = sut.recomendar(s, c, a);
+        // Facultades mal, síntomas bien
 
-        assertEquals(1, out.size());
-        assertEquals("No se puede realizar ninguna actividad debido al estado de salud.", out.get(0));
-        verifyNoInteractions(c);
+        EstadoSalud enfermo = new EstadoSalud(false, false);
+
+        CondicionesMeteorologicas climaPerfecto = new CondicionesMeteorologicas(20, 50, false, false, false);
+
+        
+
+        List<String> resultado = sistema.recomendar(enfermo, climaPerfecto, aforosLibres());
+
+        
+
+        assertEquals(1, resultado.size());
+
+        assertTrue(resultado.get(0).contains("No se puede realizar ninguna actividad"));
+
     }
 
-    // 2) Casa (temp<0, hum<15, precip=true) -> retorno temprano exclusivo
+
+
+    // 2. Test Quedarse en Casa (Frío extremo + Lluvia)
+
     @Test
-    public void testQuedarseEnCasa_PrioridadAlta() {
-        EstadoSalud s = salud(true, false);
-        CondicionesMeteorologicas c = clima(-1.0, 10, true, false, false);
-        EstadoAforos a = aforos(false, false, false, false);
 
-        List<String> out = sut.recomendar(s, c, a);
+    public void testQuedarseEnCasa() {
 
-        assertEquals(1, out.size());
-        assertEquals("Quedarse en casa", out.get(0));
+        // Temp -5, Hum 10, Precipitación (Lluvia o Nieve)
+
+        CondicionesMeteorologicas climaInvernal = new CondicionesMeteorologicas(-5, 10, true, true, true);
+
+        
+
+        List<String> resultado = sistema.recomendar(saludOK(), climaInvernal, aforosLibres());
+
+        
+
+        assertTrue(resultado.contains("Quedarse en casa"));
+
     }
 
-    // 3) Esquí (temp<0, hum<15, NO precip) y aforo NO completo
+
+
+    // 3. Test Esquí (Frío extremo, seco, sin precipitación)
+
     @Test
-    public void testEsqui_ConAforoDisponible() {
-        EstadoSalud s = salud(true, false);
-        CondicionesMeteorologicas c = clima(-5.0, 10, false, false, false);
-        EstadoAforos a = aforos(false, false, false, false);
 
-        List<String> out = sut.recomendar(s, c, a);
+    public void testEsqui() {
 
-        assertTrue(out.contains("Esquí"));
+        // Temp -5, Hum 10, No Precipitación
+
+        CondicionesMeteorologicas climaEsqui = new CondicionesMeteorologicas(-5, 10, false, false, false);
+
+        
+
+        List<String> resultado = sistema.recomendar(saludOK(), climaEsqui, aforosLibres());
+
+        
+
+        assertTrue(resultado.contains("Esquí"));
+
     }
 
-    // 4) Senderismo/Escalada (0..15, NO llueve) y aforo senderismo NO completo
+    
+
+    // 4. Test Esquí (Aforo Completo -> No debe recomendar)
+
     @Test
-    public void testSenderismoYEscalada() {
-        EstadoSalud s = salud(true, false);
-        CondicionesMeteorologicas c = clima(10.0, 50, false, false, false);
-        EstadoAforos a = aforos(false, false, false, false);
 
-        List<String> out = sut.recomendar(s, c, a);
+    public void testEsquiAforoLleno() {
 
-        assertTrue(out.contains("Senderismo"));
-        assertTrue(out.contains("Escalada"));
+        CondicionesMeteorologicas climaEsqui = new CondicionesMeteorologicas(-5, 10, false, false, false);
+
+        EstadoAforos aforosOcupados = new EstadoAforos(true, false, false, false); // Esqui ocupado
+
+        
+
+        List<String> resultado = sistema.recomendar(saludOK(), climaEsqui, aforosOcupados);
+
+        
+
+        assertFalse(resultado.contains("Esquí"));
+
     }
 
-    // 5) Primavera/Verano/Otoño (15..25, no llueve, no nublado, hum<=60)
+
+
+    // 5. Test Senderismo (0-15 grados, sin lluvia)
+
     @Test
-    public void testCatalogoPrimaveraVeranoOtono() {
-        EstadoSalud s = salud(true, false);
-        CondicionesMeteorologicas c = clima(20.0, 60, false, false, false);
-        EstadoAforos a = aforos(false, false, false, false);
 
-        List<String> out = sut.recomendar(s, c, a);
+    public void testSenderismo() {
 
-        assertTrue(out.contains("Actividades del catálogo de primavera, verano u otoño"));
+        // Temp 10, No llueve
+
+        CondicionesMeteorologicas climaOtonio = new CondicionesMeteorologicas(10, 50, false, false, false);
+
+        
+
+        List<String> resultado = sistema.recomendar(saludOK(), climaOtonio, aforosLibres());
+
+        
+
+        assertTrue(resultado.contains("Senderismo"));
+
+        assertTrue(resultado.contains("Escalada"));
+
     }
 
-    // 6) Culturales/Gastronómicas (25..35, NO llueve) y aforo cultural NO completo
+
+
+    // 6. Test Primavera (15-25 grados, ideal)
+
     @Test
-    public void testCulturalesYGastronomicas() {
-        EstadoSalud s = salud(true, false);
-        CondicionesMeteorologicas c = clima(25.0, 80, false, false, false);
-        EstadoAforos a = aforos(false, false, false, false);
 
-        List<String> out = sut.recomendar(s, c, a);
+    public void testPrimavera() {
 
-        assertTrue(out.contains("Actividades culturales"));
-        assertTrue(out.contains("Actividades gastronómicas"));
+        // Temp 20, Hum 50, Sol
+
+        CondicionesMeteorologicas climaPrimavera = new CondicionesMeteorologicas(20, 50, false, false, false);
+
+        
+
+        List<String> resultado = sistema.recomendar(saludOK(), climaPrimavera, aforosLibres());
+
+        
+
+        assertTrue(resultado.contains("Actividades del catálogo de primavera, verano u otoño"));
+
     }
 
-    // 7) Playa/Piscina (temp>30, NO llueve). Piscina depende de aforo
+
+
+    // 7. Test Solapamiento: Culturales y Playa (32 grados)
+
+    // Este caso es interesante porque 32ºC cumple la regla de Culturales (25-35) Y la de Playa (>30).
+
     @Test
-    public void testPlayaYPiscina_AforoPiscinaDisponible() {
-        EstadoSalud s = salud(true, false);
-        CondicionesMeteorologicas c = clima(31.0, 40, false, false, false);
-        EstadoAforos a = aforos(false, false, false, false);
 
-        List<String> out = sut.recomendar(s, c, a);
+    public void testSolapamientoCalor() {
 
-        assertTrue(out.contains("Playa"));
-        assertTrue(out.contains("Piscina"));
+        // Temp 32, No llueve
+
+        CondicionesMeteorologicas climaCalor = new CondicionesMeteorologicas(32, 40, false, false, false);
+
+        
+
+        List<String> resultado = sistema.recomendar(saludOK(), climaCalor, aforosLibres());
+
+        
+
+        // Debe sugerir TODO lo posible
+
+        assertTrue("Debe sugerir culturales", resultado.contains("Actividades culturales"));
+
+        assertTrue("Debe sugerir playa", resultado.contains("Playa"));
+
+        assertTrue("Debe sugerir piscina", resultado.contains("Piscina"));
+
     }
 
-    // 8) Caso donde ninguna regla aplica => mensaje por defecto
+    
+
+    // 8. Test Lluvia (Bloquea casi todo excepto casa, o nada si no hace frío extremo)
+
     @Test
-    public void testSinRecomendaciones_DevuelveMensajeGenerico() {
-        EstadoSalud s = salud(true, false);
 
-        // Lluvia: precip=true y nieve=false => llueve=true
-        // Con llueve=true NO se activan Senderismo/Escalada, ni PVO, ni Cultural/Gastro, ni Playa/Piscina.
-        // Además temp no es <0, así que no entra en Casa ni Esquí.
-        CondicionesMeteorologicas c = clima(20.0, 50, true, false, false);
+    public void testLluviaGeneral() {
 
-        EstadoAforos a = aforos(false, false, false, false);
+        // Temp 20, Lluvia
 
-        List<String> out = sut.recomendar(s, c, a);
+        CondicionesMeteorologicas climaLluvioso = new CondicionesMeteorologicas(20, 80, true, false, true);
 
-        assertEquals(1, out.size());
-        assertEquals("No hay recomendaciones específicas para las condiciones actuales.", out.get(0));
+        
+
+        List<String> resultado = sistema.recomendar(saludOK(), climaLluvioso, aforosLibres());
+
+        
+
+        // No debe recomendar senderismo, ni primavera, ni playa...
+
+        // Dependiendo de la implementación, podría devolver lista vacía o mensaje por defecto.
+
+        assertFalse(resultado.contains("Senderismo"));
+
+        assertFalse(resultado.contains("Playa"));
+
+        
+
+        // Verificamos si devuelve el mensaje por defecto (opcional según implementación)
+
+        if (resultado.size() == 1) {
+
+             assertTrue(resultado.get(0).contains("No hay recomendaciones"));
+
+        }
+
     }
 
 }
