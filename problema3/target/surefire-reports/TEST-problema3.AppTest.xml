@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="problema3.AppTest" time="1.094" tests="8" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3/target/test-classes:/home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3/target/classes:/home/marcoshc/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/marcoshc/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/marcoshc/.m2/repository/org/mockito/mockito-core/5.12.0/mockito-core-5.12.0.jar:/home/marcoshc/.m2/repository/net/bytebuddy/byte-buddy/1.14.15/byte-buddy-1.14.15.jar:/home/marcoshc/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.15/byte-buddy-agent-1.14.15.jar:/home/marcoshc/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:"/>
+    <property name="java.vm.vendor" value="Ubuntu"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://ubuntu.com/"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="ES"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3/target/surefire/surefirebooter-20251218124808445_3.jar /home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3/target/surefire 2025-12-18T12-48-08_396-jvmRun1 surefire-20251218124808445_1tmp surefire_0-20251218124808445_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3/target/test-classes:/home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3/target/classes:/home/marcoshc/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/marcoshc/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/marcoshc/.m2/repository/org/mockito/mockito-core/5.12.0/mockito-core-5.12.0.jar:/home/marcoshc/.m2/repository/net/bytebuddy/byte-buddy/1.14.15/byte-buddy-1.14.15.jar:/home/marcoshc/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.15/byte-buddy-agent-1.14.15.jar:/home/marcoshc/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/marcoshc"/>
+    <property name="user.language" value="es"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-10-21"/>
+    <property name="java.home" value="/usr/lib/jvm/java-21-openjdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3/target/surefire/surefirebooter-20251218124808445_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.9+10-Ubuntu-124.04"/>
+    <property name="user.name" value="marcoshc"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.14.0-37-generic"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/marcoshc/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="21.0.9"/>
+    <property name="user.dir" value="/home/marcoshc/Escritorio/ESI/TERCERO/ISO II/LABORATORIO/ISO2-2025-GRUPOB7-TESTING-P3/problema3"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Ubuntu"/>
+    <property name="java.vm.version" value="21.0.9+10-Ubuntu-124.04"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="testQuedarseEnCasa_PrioridadAlta" classname="problema3.AppTest" time="1.024">
+    <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/home/marcoshc/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.15/byte-buddy-agent-1.14.15.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+  </testcase>
+  <testcase name="testCulturalesYGastronomicas" classname="problema3.AppTest" time="0.002"/>
+  <testcase name="testSenderismoYEscalada" classname="problema3.AppTest" time="0.003"/>
+  <testcase name="testEsqui_ConAforoDisponible" classname="problema3.AppTest" time="0.004"/>
+  <testcase name="testSinRecomendaciones_DevuelveMensajeGenerico" classname="problema3.AppTest" time="0.004"/>
+  <testcase name="testCatalogoPrimaveraVeranoOtono" classname="problema3.AppTest" time="0.003"/>
+  <testcase name="testSaludSinFacultades_NoPuedeHacerNada" classname="problema3.AppTest" time="0.004"/>
+  <testcase name="testPlayaYPiscina_AforoPiscinaDisponible" classname="problema3.AppTest" time="0.004"/>
+</testsuite>

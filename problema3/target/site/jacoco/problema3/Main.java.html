@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Problema 3 - Testing ISO2</a> &gt; <a href="index.source.html" class="el_package">problema3</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package problema3;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+
+
+<span class="nc" id="L7">public class Main {</span>
+
+<span class="nc" id="L9">    private static Scanner scanner = new Scanner(System.in);</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L12">        RecomendadorActividades sistema = new RecomendadorActividades();</span>
+<span class="nc" id="L13">        boolean continuar = true;</span>
+
+<span class="nc bnc" id="L15" title="All 2 branches missed.">        while (continuar) {</span>
+            try {
+<span class="nc" id="L17">                System.out.println(&quot;\n--- 1. Datos del Cliente ---&quot;);</span>
+<span class="nc" id="L18">                boolean facultades = leerBoolean(&quot;¿Tiene facultades físicas plenas?&quot;);</span>
+<span class="nc" id="L19">                boolean sintomas = leerBoolean(&quot;¿Ha tenido síntomas infecciosos en las últimas 2 semanas?&quot;);</span>
+<span class="nc" id="L20">                EstadoSalud salud = new EstadoSalud(facultades, sintomas);</span>
+
+<span class="nc" id="L22">                System.out.println(&quot;\n--- 2. Condiciones Meteorológicas ---&quot;);</span>
+<span class="nc" id="L23">                double temperatura = leerDouble(&quot;Temperatura actual (°C): &quot;);</span>
+<span class="nc" id="L24">                int humedad = leerEntero(&quot;Humedad relativa (0-100): &quot;);</span>
+<span class="nc" id="L25">                boolean precipitaciones = leerBoolean(&quot;¿Hay precipitaciones?&quot;);</span>
+<span class="nc" id="L26">                boolean esNieve = false;</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">                if (precipitaciones) {</span>
+<span class="nc" id="L28">                    esNieve = leerBoolean(&quot;¿Las precipitaciones son de nieve?&quot;);</span>
+                }
+<span class="nc" id="L30">                boolean nublado = leerBoolean(&quot;¿Está nublado?&quot;);</span>
+                
+<span class="nc" id="L32">                CondicionesMeteorologicas clima = new CondicionesMeteorologicas( //valida humedad internamente</span>
+                        temperatura, humedad, precipitaciones, esNieve, nublado
+                );
+
+<span class="nc" id="L36">                System.out.println(&quot;\n--- 3. Estado de Aforos (Instalaciones) ---&quot;);</span>
+                // Solo preguntamos aforos si el cliente está sano, para agilizar, 
+<span class="nc" id="L38">                boolean aforoEsqui = leerBoolean(&quot;¿Aforo de esquí completo?&quot;);</span>
+<span class="nc" id="L39">                boolean aforoSenderismo = leerBoolean(&quot;¿Aforo de senderismo completo?&quot;);</span>
+<span class="nc" id="L40">                boolean aforoCultural = leerBoolean(&quot;¿Aforo cultural/gastronómico completo?&quot;);</span>
+<span class="nc" id="L41">                boolean aforoPiscina = leerBoolean(&quot;¿Aforo de piscina completo?&quot;);</span>
+
+<span class="nc" id="L43">                EstadoAforos aforos = new EstadoAforos(</span>
+                        aforoEsqui, aforoSenderismo, aforoCultural, aforoPiscina
+                );
+
+<span class="nc" id="L47">                List&lt;String&gt; recomendaciones = sistema.recomendar(salud, clima, aforos);</span>
+
+<span class="nc" id="L49">                System.out.println(&quot;ACTIVIDADES RECOMENDADAS&quot;);</span>
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">                if (recomendaciones.isEmpty()) {</span>
+<span class="nc" id="L52">                    System.out.println(&quot;- No hay recomendaciones disponibles para estas condiciones.&quot;);</span>
+                } else {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">                    for (String actividad : recomendaciones) {</span>
+<span class="nc" id="L55">                        System.out.println(&quot;-&gt; &quot; + actividad);</span>
+<span class="nc" id="L56">                    }</span>
+                }
+
+<span class="nc" id="L59">            } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L60">                System.err.println(&quot;\nERROR DE VALIDACIÓN: &quot; + e.getMessage());</span>
+<span class="nc" id="L61">            } catch (Exception e) {</span>
+<span class="nc" id="L62">                System.err.println(&quot;\nERROR INESPERADO: &quot; + e.getMessage());</span>
+<span class="nc" id="L63">                scanner.nextLine();</span>
+<span class="nc" id="L64">            }</span>
+
+<span class="nc" id="L66">            continuar = leerBoolean(&quot;\n¿Desea realizar otra consulta?&quot;);</span>
+        }
+
+<span class="nc" id="L69">        System.out.println(&quot;Gracias por usar el sistema.&quot;);</span>
+<span class="nc" id="L70">        scanner.close();</span>
+<span class="nc" id="L71">    }</span>
+
+    // --- Métodos auxiliares para lectura robusta de datos ---
+
+    private static boolean leerBoolean(String mensaje) {
+        while (true) {
+<span class="nc" id="L77">            System.out.print(mensaje + &quot; (s/n): &quot;);</span>
+<span class="nc" id="L78">            String entrada = scanner.next().trim().toLowerCase();</span>
+<span class="nc bnc" id="L79" title="All 4 branches missed.">            if (entrada.equals(&quot;s&quot;) || entrada.equalsIgnoreCase(&quot;Si&quot;)) return true;</span>
+<span class="nc bnc" id="L80" title="All 4 branches missed.">            if (entrada.equals(&quot;n&quot;) || entrada.equalsIgnoreCase(&quot;No&quot;)) return false;</span>
+<span class="nc" id="L81">            System.out.println(&quot;Por favor, introduzca 's' para sí o 'n' para no.&quot;);</span>
+<span class="nc" id="L82">        }</span>
+    }
+
+    private static double leerDouble(String mensaje) {
+        while (true) {
+            try {
+<span class="nc" id="L88">                System.out.print(mensaje);</span>
+<span class="nc" id="L89">                return scanner.nextDouble();</span>
+<span class="nc" id="L90">            } catch (InputMismatchException e) {</span>
+<span class="nc" id="L91">                System.out.println(&quot;Error: Introduce un número válido.&quot;);</span>
+<span class="nc" id="L92">                scanner.next();</span>
+<span class="nc" id="L93">            }</span>
+        }
+    }
+
+    private static int leerEntero(String mensaje) {
+        while (true) {
+            try {
+<span class="nc" id="L100">                System.out.print(mensaje);</span>
+<span class="nc" id="L101">                return scanner.nextInt();</span>
+<span class="nc" id="L102">            } catch (InputMismatchException e) {</span>
+<span class="nc" id="L103">                System.out.println(&quot;Error: Introduce un número entero válido.&quot;);</span>
+<span class="nc" id="L104">                scanner.next();</span>
+<span class="nc" id="L105">            }</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecomendadorActividades.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Problema 3 - Testing ISO2</a> &gt; <a href="index.source.html" class="el_package">problema3</a> &gt; <span class="el_source">RecomendadorActividades.java</span></div><h1>RecomendadorActividades.java</h1><pre class="source lang-java linenums">package problema3;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+<span class="fc" id="L7">public class RecomendadorActividades {</span>
+
+    /**
+     * Genera una lista de recomendaciones basada en las condiciones dadas.
+     * @param salud Estado de salud del cliente
+     * @param clima Condiciones del tiempo
+     * @param aforos Estado de los aforos
+     * @return Lista de cadenas con las actividades sugeridas
+     */
+    public List&lt;String&gt; recomendar(EstadoSalud salud, CondicionesMeteorologicas clima, EstadoAforos aforos) {
+<span class="fc" id="L17">        List&lt;String&gt; recomendaciones = new ArrayList&lt;&gt;();</span>
+
+        // Regla 1: Salud
+        // Si no tiene facultades plenas o ha tenido síntomas, no puede hacer nada.
+<span class="pc bpc" id="L21" title="1 of 4 branches missed.">        if (!salud.isFacultadesFisicasPlenas() || salud.hasSintomasInfecciososUltimas2Semanas()) {</span>
+<span class="fc" id="L22">            recomendaciones.add(&quot;No se puede realizar ninguna actividad debido al estado de salud.&quot;);</span>
+<span class="fc" id="L23">            return recomendaciones; // Retorno temprano</span>
+        }
+
+<span class="fc" id="L26">        double temp = clima.getTemperatura();</span>
+<span class="fc" id="L27">        int hum = clima.getHumedadRelativa();</span>
+<span class="fc" id="L28">        boolean precip = clima.isHayPrecipitaciones();</span>
+<span class="fc" id="L29">        boolean nieve = clima.isEsNieve();</span>
+<span class="fc" id="L30">        boolean nublado = clima.isEstaNublado();</span>
+
+        // Regla 2: Casa
+        // Temp &lt; 0, Hum &lt; 15%, Precipitación (Nieve o Agua)
+<span class="pc bpc" id="L34" title="1 of 6 branches missed.">        if (temp &lt; 0 &amp;&amp; hum &lt; 15 &amp;&amp; precip) {</span>
+<span class="fc" id="L35">            recomendaciones.add(&quot;Quedarse en casa&quot;);</span>
+<span class="fc" id="L36">            return recomendaciones; // Prioridad alta, sugerencia exclusiva</span>
+        }
+
+        // Regla 3: Esquí 
+        // Temp &lt; 0, Hum &lt; 15%, NO precipitación
+<span class="pc bpc" id="L41" title="2 of 6 branches missed.">        if (temp &lt; 0 &amp;&amp; hum &lt; 15 &amp;&amp; !precip) {</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            if (!aforos.isAforoEsquiCompleto()) {</span>
+<span class="fc" id="L43">                recomendaciones.add(&quot;Esquí&quot;);</span>
+            }
+        }
+
+        // Regla 4: Senderismo / Escalada 
+        // Temp 0-15, NO precipitación de agua (asumimos precip=true y nieve=false es lluvia)
+<span class="pc bpc" id="L49" title="1 of 4 branches missed.">        boolean llueve = precip &amp;&amp; !nieve;</span>
+<span class="pc bpc" id="L50" title="1 of 6 branches missed.">        if (temp &gt;= 0 &amp;&amp; temp &lt;= 15 &amp;&amp; !llueve) {</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">            if (!aforos.isAforoSenderismoCompleto()) {</span>
+<span class="fc" id="L52">                recomendaciones.add(&quot;Senderismo&quot;);</span>
+<span class="fc" id="L53">                recomendaciones.add(&quot;Escalada&quot;);</span>
+            }
+        }
+
+        // Regla 5: Primavera/Verano/Otoño 
+        // Temp 15-25, NO llueve, NO nublado, Hum &lt;= 60%
+<span class="pc bpc" id="L59" title="1 of 10 branches missed.">        if (temp &gt;= 15 &amp;&amp; temp &lt;= 25 &amp;&amp; !llueve &amp;&amp; !nublado &amp;&amp; hum &lt;= 60) {</span>
+<span class="fc" id="L60">            recomendaciones.add(&quot;Actividades del catálogo de primavera, verano u otoño&quot;);</span>
+        }
+
+        // Regla 6: Culturales / Gastronómicas 
+        // Temp 25-35, NO llueve
+<span class="pc bpc" id="L65" title="2 of 6 branches missed.">        if (temp &gt;= 25 &amp;&amp; temp &lt;= 35 &amp;&amp; !llueve) {</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            if (!aforos.isAforoCulturalCompleto()) {</span>
+<span class="fc" id="L67">                recomendaciones.add(&quot;Actividades culturales&quot;);</span>
+<span class="fc" id="L68">                recomendaciones.add(&quot;Actividades gastronómicas&quot;);</span>
+            }
+        }
+
+        // Regla 7: Playa / Piscina [cite: 225-226]
+        // Temp &gt; 30, NO llueve
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">        if (temp &gt; 30 &amp;&amp; !llueve) {</span>
+<span class="fc" id="L75">            recomendaciones.add(&quot;Playa&quot;);</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">            if (!aforos.isAforoPiscinaCompleto()) {</span>
+<span class="fc" id="L77">                recomendaciones.add(&quot;Piscina&quot;);</span>
+            }
+        }
+        
+        // Manejo de caso sin recomendaciones explícitas en el texto
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (recomendaciones.isEmpty()) {</span>
+<span class="fc" id="L83">            recomendaciones.add(&quot;No hay recomendaciones específicas para las condiciones actuales.&quot;);</span>
+        }
+
+<span class="fc" id="L86">        return recomendaciones;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
