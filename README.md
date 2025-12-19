@@ -4,8 +4,8 @@
 
 ## 👥 Integrantes
 
-- **Mario Burdallo Camargo**
-- **Alonso De Miguel Herencia**
+- **Arturo Domenech Castellanos**
+- **Marcos Heredia Cerro**
 
 ---
 
